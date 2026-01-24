@@ -8,7 +8,8 @@ export async function GET(){
         const state = crypto.randomBytes(16).toString('hex');
         (await cookies()).set('sk_state', state, { httpOnly: true, sameSite: 'lax', path: '/' });
 
-        const redirectUri = process.env.NEXT_PUBLIC_BASE_URL!;
+        // Use the same redirect URI as configured for ScaleKit callback
+        const redirectUri = process.env.SCALEKIT_REDIRECT_URI!;
 
         const options = {
             scope: ["openid", "profile", "email", "offline_access"], state
