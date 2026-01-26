@@ -3,7 +3,8 @@
 import { isAuthorized } from "@/lib/isAuth"
 import { useEffect, useState } from "react"
 
-export const useUser = async () => {
+// Fix: Remove async from hook declaration - hooks cannot be async
+export const useUser = () => {
     const [email, setEmail] = useState(null)
     const [loading, setLoading] = useState(true)
 
