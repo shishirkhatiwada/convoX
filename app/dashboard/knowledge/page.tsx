@@ -12,7 +12,7 @@ const Page = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const [knowledgeStoringLoader, setKnowledgeStoringLoader] = useState(false);
-  const [knowledgeSourceLoader, setKnowledgeSourceLoader] = useState(true);
+  const [knowledgeSourceLoader, setKnowledgeSourceLoader] = useState(false);
   const [knowledgeSources, setKnowledgeSources] = useState<KnowlegdeSource[]>();
 
   const openModal = (tab: string) => {
