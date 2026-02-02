@@ -38,7 +38,7 @@ const AddKnowledge = ({
   const validateUrl = (url: string) => {
     try {
       const parse = new URL(url)
-      return ["http", "https"].includes(parse.protocol)
+      return ["http:", "https:"].includes(parse.protocol)
     } catch (error) {
       return false
     }
