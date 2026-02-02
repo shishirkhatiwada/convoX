@@ -69,13 +69,16 @@ export async function POST(req: NextRequest) {
             }
 
             const markdown = await summarizeMarkdown(html)
+            console.log(markdown);
+            
 
 
         }
 
         return NextResponse.json({ message: "Knowledge source stored successfully" }, { status: 200 });
 
+    } catch (error) {
+        console.error("Error in knowledge store:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
-
-    catch { }
 }
