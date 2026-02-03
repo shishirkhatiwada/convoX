@@ -1,0 +1,1 @@
+ALTER TABLE "knowledge_source" ALTER COLUMN "name" DROP NOT NULL;
