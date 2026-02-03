@@ -14,3 +14,5 @@ export interface KnowlegdeSource {
     created_at: string | null;
     last_updated: string | null;
 }
+
+export type SourceTypes  = "website" | "docs" | "text" | "upload"

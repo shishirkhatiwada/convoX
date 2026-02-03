@@ -15,6 +15,20 @@
       "when": 1769349540377,
       "tag": "0001_cooing_lake",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770112934976,
+      "tag": "0002_fixed_miss_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1770116577235,
+      "tag": "0003_wandering_wallop",
+      "breakpoints": true
     }
   ]
 }

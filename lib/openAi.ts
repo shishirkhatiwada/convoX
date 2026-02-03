@@ -37,7 +37,7 @@ export async function summarizeMarkdown(markdown: string) {
       model: "gemini-2.5-flash",
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 900,
+        maxOutputTokens: 2000,
       },
     });
 
@@ -49,13 +49,14 @@ Your task:
 
 STRICT RULES:
 - Output ONLY plain text (no markdown, no bullet points, no headings).
-- Write as ONE continuous paragraph.
+- Write as complete sentences that end with proper punctuation.
 - Remove navigation, menus, buttons, CTAs, pricing tables, sponsors, ads, testimonials, community chats, UI labels, emojis, and decorative content.
 - Remove repetition and marketing language.
 - Keep ONLY factual, informational content that helps answer customer support questions.
 - Do NOT copy sentences verbatim unless absolutely necessary.
 - Compress aggressively while preserving meaning.
-- The final output MUST be under 2000 words.
+- Ensure all sentences are complete and end with proper punctuation.
+- The final output MUST be under 2000 words and end with a complete sentence.
 
 The result will be stored as long-term context for a chatbot.
 
@@ -92,7 +93,7 @@ export async function summarizeConversation(messages: any[]) {
 
     const prompt = `
 Summarize the following conversation history into a concise paragraph, preserving key details and user intent.
-The final output MUST be under 2000 words.
+The final output MUST be exactly 2000 words.
 
 CONVERSATION:
 ${conversationText}
