@@ -16,3 +16,26 @@ export interface KnowlegdeSource {
 }
 
 export type SourceTypes  = "website" | "docs" | "text" | "upload"
+
+
+export interface SectionFormData {
+    name: string
+    description: string
+    tone: Tone
+    allowedTopics: string
+    blockedTopics: string
+    fallbackBehaviour: string
+}
+
+export interface Section {
+    id: string
+    name: string
+    description: string
+    sourceCount: number
+    source_ids?: string[]
+    scopeLabel: string
+    tone: Tone
+    allowedTopics?: string
+    blockedTopics?: string
+    status: SectionStatus
+}
