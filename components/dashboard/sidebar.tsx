@@ -37,7 +37,7 @@ const SIDEBAR_ITEMS = [
   },
   {
     label: "Conversation",
-    href: "/dashboard/cpnversation",
+    href: "/dashboard/conversations",
     icon: MessageSquare,
   },
   {
