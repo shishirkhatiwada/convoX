@@ -1,0 +1,1 @@
+ALTER TABLE "chatbot_metadata" RENAME COLUMN "welcome_messasge" TO "welcome_message";

@@ -43,6 +43,13 @@
       "when": 1770473436023,
       "tag": "0005_pale_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1770631112668,
+      "tag": "0006_majestic_shiva",
+      "breakpoints": true
     }
   ]
 }
