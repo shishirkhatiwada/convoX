@@ -1,22 +1,27 @@
 "use client"
 import { Section } from '@/@types/types';
+import ApperanceConfig from '@/components/dashboard/chatbot/appearanceConfig';
 import ChatSimulator from '@/components/dashboard/chatbot/chatSimulator'
+import EmbedCodeConfig from '@/components/dashboard/chatbot/EmbedCodeConfig';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { knowledge_source } from '@/db/schema';
 import React, { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner';
 
 interface ChatbotMetaData {
-  id:string,
-  user_email:string,
-  color:string,
-  welcome_messasge:string,
-  created_at:string,
-  source_ids:string[],
+  id: string,
+  user_email: string,
+  color: string,
+  welcome_message: string,
+  created_at: string,
+  source_ids: string[],
 
 }
 
 const Chatbot = () => {
   const [metaData, setMetaData] = useState<ChatbotMetaData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const[sections, setSections] = useState<Section[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
 
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState('');
@@ -24,34 +29,34 @@ const Chatbot = () => {
   const [activeSection, setActiveSection] = useState<Section | null>(null);
 
   const [isTyping, setIsTyping] = useState(false);
-  const [primaryColor, setPrimaryColor] = useState('#000000');
+  const [primaryColor, setPrimaryColor] = useState('#213C51');
   const scrollViewportRef = useRef<HTMLDivElement | null>(null);
   const [welcomeMessage, setWelcomeMessage] = useState('Hello! How can I help you today?');
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchMetaData = async () => {
       try {
         const response = await fetch('/api/chatbot/metadata/fetch');
         const data = await response.json();
         setMetaData(data);
-        if(data) {
+        if (data) {
           setPrimaryColor(data.color || '#000000');
           setWelcomeMessage(data.welcome_message || 'Hello! How can I help you today?');
         }
-       setMessages([{
-        role: 'assistant',
-        content: welcomeMessage || 'Hello! How can I help you today?',
-        isWelcome: true,
-        section: null
-       }]);
+        setMessages([{
+          role: 'assistant',
+          content: welcomeMessage || 'Hello! How can I help you today?',
+          isWelcome: true,
+          section: null
+        }]);
 
-       const sectionsResponse = await fetch('/api/section/fetch');
-      if(sectionsResponse.ok) {
-        const sectionsData = await sectionsResponse.json();
-        setSections(sectionsData.sections || []);
-      }
-      
+        const sectionsResponse = await fetch('/api/section/fetch');
+        if (sectionsResponse.ok) {
+          const sectionsData = await sectionsResponse.json();
+          setSections(sectionsData.sections || []);
+        }
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -63,32 +68,92 @@ const Chatbot = () => {
 
 
   useEffect(() => {
-    if(scrollViewportRef.current) {
-      scrollViewportRef.current.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'})
-      
+    if (scrollViewportRef.current) {
+      scrollViewportRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+
     }
   }, [messages, isTyping]);
 
 
-  const handleSend = async () => {}
+  const handleSend = async () => { 
+    if (input.trim() === '') return;
+   
+    const currentSection = sections.find((section) => section.id === activeSection?.id);
+    const message = {
+      role: 'user',
+      content: input,
+      section: currentSection
+    };
+    setMessages((prevMessages) => [...prevMessages, message]);
+    setInput('');
+    setIsTyping(true);
 
-  const handleKeyDown = async (e: React.KeyboardEvent)=> {
-    if(e.key === 'Enter' && !e.shiftKey) {
+    const res = await fetch('/api/chat/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        messages: [...messages, message],
+        // FIXED: Get source_ids from the active section, parse if it's a string
+        knowledge_source_id: currentSection?.source_ids 
+          ? (typeof currentSection.source_ids === 'string' 
+              ? JSON.parse(currentSection.source_ids) 
+              : currentSection.source_ids)
+          : []
+      })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      setMessages((prevMessages) => [...prevMessages, {role: 'assistant', content: data.reply, section: currentSection}]); // FIXED: Changed 'response' to 'reply'
+    }
+    setIsTyping(false);
+  }
+
+  const handleKeyDown = async (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
   }
 
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+
+      const response = await fetch('/api/chatbot/metadata/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ color: primaryColor, welcome_message: welcomeMessage })
+      });
+      if (response.ok) {
+        const updated = await response.json();
+        setMetaData(updated);
+        toast.success('Chatbot metadata updated successfully');
+      }
+
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to update chatbot metadata');
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  const hasChanges = metaData ? (primaryColor !== metaData.color || welcomeMessage !== metaData.welcome_message) : false;
+
   const handleSectionClick = async (section: Section) => {
     setActiveSection(section)
-    const usrMsg = {role: 'user', content: section.name, section: section.id}
+    const usrMsg = { role: 'user', content: section.name, section: section.id }
     setMessages((prevMessages) => [...prevMessages, usrMsg]);
     setIsTyping(true);
     setInput('');
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setIsTyping(false);
-      const aiMsg = {role: 'assistant', content: 'Hello! How can I help you today?', section: null}
+      const aiMsg = { role: 'assistant', content: 'Hello! How can I help you today?', section: null }
       setMessages((prevMessages) => [...prevMessages, aiMsg]);
     }, 800)
   }
@@ -108,7 +173,7 @@ const Chatbot = () => {
       <div className='flex justify-between items-center shrink-0'>
         <div>
           <h1 className='text-2xl font-semibold text-white tracking-tight'>
-            Playground 🎉 Chatbot 
+            Playground 🎉 Chatbot
           </h1>
           <p className='text-sm text-zinc-400 mt-1'>
             Test Yout AI Chatbot with the smartest AI - Experience the power of AI
@@ -118,20 +183,36 @@ const Chatbot = () => {
       <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-0'>
         {/* FIXED: Added proper spacing in className */}
         <div className='lg:col-span-7 flex flex-col h-full min-h-0 space-y-4'>
-          <ChatSimulator 
-          messages={messages}
-          primaryColor={primaryColor}
-          sections={sections}
-          input={input}
-          setInput={setInput}
-          handleSend={handleSend}
-          handleKeyDown={handleKeyDown}
-          handleSectionClick={handleSectionClick}
-          activeSection={activeSection}
-          isTyping={isTyping}
-          handleReset={handleReset}
-          scrollRef={scrollViewportRef}
+          <ChatSimulator
+            messages={messages}
+            primaryColor={primaryColor}
+            sections={sections}
+            input={input}
+            setInput={setInput}
+            handleSend={handleSend}
+            handleKeyDown={handleKeyDown}
+            handleSectionClick={handleSectionClick}
+            activeSection={activeSection}
+            isTyping={isTyping}
+            handleReset={handleReset}
+            scrollRef={scrollViewportRef}
           />
+        </div>
+        <div className='lg:col-span-5 h-full min-h-0 overflow-hidden flex flex-col '>
+          <ScrollArea className='h-full pr-4'>
+            <div className='space-y-6 pb-8'>
+              <ApperanceConfig
+                primaryColor={primaryColor}
+                setPrimaryColor={setPrimaryColor}
+                welcomeMessage={welcomeMessage}
+                setWelcomeMessage={setWelcomeMessage}
+                handleSave={handleSave}
+                isSaving={isSaving}
+                hasChanges={hasChanges}
+              />
+              <EmbedCodeConfig chatbotId={metaData?.id} />
+            </div>
+          </ScrollArea>
         </div>
       </div>
     </div>

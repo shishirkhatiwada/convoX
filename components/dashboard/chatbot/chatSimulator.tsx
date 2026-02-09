@@ -62,7 +62,8 @@ const ChatSimulator = ({
       <ScrollArea className='flex-1 h-0 p-6 bg-zinc-950/30'>
         <div className='space-y-6 pb-4'>
     {messages.map((m, i) => (
-        <div key={i} className={cn("flex w-full flex-col", m.role === 'user' ? 'items-center' : 'items-start')}>
+        <div key={i} className={cn("flex w-full flex-col", m.role === 'user' ? 'items-end' : 'items-start')}>
+            {/* FIXED: Changed items-center to items-end for user messages to align them to the right */}
             <div className={cn("flex max-w-[80%] gap-3", m.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
                 {/* FIXED: Added gap-3 for spacing between avatar and message */}
                 <div className={cn("h-8 w-8 rounded-full flex items-center justify-center shrink-0 border border-white/5", m.role === 'user' ? 'bg-zinc-800' : 'text-white')}
@@ -129,15 +130,14 @@ const ChatSimulator = ({
         onChange={(e) => setInput(e.target.value)}
       
         placeholder='Type a message...'
-        className='resize-none pr-12 bg-[#0a0a0e] border border-white/5 text-white focus-visible:ring-0 focus-visible:ring-offset-0'
-        style={{backgroundColor: primaryColor}}
-        onFocus={(e) => e.target.style.backgroundColor = primaryColor}
-        onBlur={(e) => e.target.style.backgroundColor = primaryColor}
+        className='resize-none pr-12 bg-zinc-900 border border-white/10 text-white focus-visible:ring-0 focus-visible:ring-offset-0'
         />
+        {/* FIXED: Removed primaryColor from textarea background - only bot avatar and send button use primary color */}
         <Button
         onClick={handleSend}
-        className='cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-white'
-        style={{backgroundColor: primaryColor}}
+        disabled={!input.trim()}
+        className='cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-white disabled:opacity-50 disabled:cursor-not-allowed'
+        style={{backgroundColor: input.trim() ? primaryColor : '#52525b'}}
         >
             <Send className='h-4 w-4' />
         </Button>
