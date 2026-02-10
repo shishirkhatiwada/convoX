@@ -50,6 +50,13 @@
       "when": 1770631112668,
       "tag": "0006_majestic_shiva",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1770717266508,
+      "tag": "0007_previous_white_queen",
+      "breakpoints": true
     }
   ]
 }
