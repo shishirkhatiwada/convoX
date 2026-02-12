@@ -8,7 +8,7 @@ const EmbedCodeConfig = ({chatbotId}: {chatbotId: string | undefined}) => {
 
     const handleCopyCode = () => {
         setCopied(true)
-        navigator.clipboard.writeText(`<script src="https://chatbot.com/widget.js" data-chatbot-id="${chatbotId}" defer ></script>`)
+        navigator.clipboard.writeText(`<script src="http://localhost:3000/widget.js" data-chatbot-id="${chatbotId}" defer ></script>`)
         setTimeout(() => {
             setCopied(false)
         }, 2000)
@@ -25,7 +25,7 @@ const EmbedCodeConfig = ({chatbotId}: {chatbotId: string | undefined}) => {
 <CardContent className='space-y-5'>
     <div className='bg-zinc-900 border border-zinc-700 rounded-lg p-4'>
         <code className='text-sm text-[#E06B80]'>
-            &lt;script src=&quot;https://chatbot.com/widget.js&quot; data-chatbot-id=&quot;{chatbotId}&quot; defer &gt;&lt;/script&gt;
+            &lt;script src=&quot;http://localhost:3000/widget.js&quot; data-chatbot-id=&quot;{chatbotId}&quot; defer &gt;&lt;/script&gt;
         </code>
     </div>
     <button
