@@ -57,6 +57,20 @@
       "when": 1770717266508,
       "tag": "0007_previous_white_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1770889829252,
+      "tag": "0008_short_sheva_callister",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1770892917974,
+      "tag": "0009_strong_celestials",
+      "breakpoints": true
     }
   ]
 }
