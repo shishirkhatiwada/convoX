@@ -137,8 +137,11 @@ const EmbedPage = () => {
     }
 
     // ---------- SEND HANDLER ----------
-    const handleSend = () => {
-        if (!input.trim()) return
+    const handleSend = async () => {
+        if (!input.trim() || !token) return
+
+        const currentSection = sections.find((section) => section.name === activeSection)
+        const sourceIds = currentSection?.source_ids || []
 
         const userMsg = {
             role: "user",
@@ -150,18 +153,32 @@ const EmbedPage = () => {
         setInput("")
         setIsTyping(true)
 
-        // fake response simulation
-        setTimeout(() => {
+        try {
+            const res = await fetch("/api/chat/public", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
+                ,body: JSON.stringify({
+                    message: [...messages, userMsg],
+                    knowledge_source_id: sourceIds
+                     
+                })
+            })
+            if(res.ok) {
+                const data = await res.json()
+                setMessages((prev) => [...prev, {role: "assistant", content: data.reply, section: null}])
+            } else {
+                setMessages((prev) => [...prev, {role: "assistant", content: "I'm sorry, something went wrong. Please try again.", section: null}])
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
             setIsTyping(false)
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: "assistant",
-                    content: "This is where your AI/API response will appear.",
-                    section: activeSection,
-                },
-            ])
-        }, 900)
+        }
+
+    
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -201,17 +218,17 @@ const EmbedPage = () => {
         <div className="w-full h-full flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0e] shadow-2xl">
 
             {/* Header - Fixed */}
-            <div className="flex-shrink-0 h-14 px-4 flex items-center justify-between border-b border-white/10 bg-[#0e0e12]/90 backdrop-blur-xl">
+            <div className="shrink-0 h-14 px-4 flex items-center justify-between border-b border-white/10 bg-[#0e0e12]/90 backdrop-blur-xl">
 
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg">
                             <Image
-                                src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                 alt="ConvoX"
-                                width={40}
-                                height={40}
-                                className="object-cover"
+                                width={32}
+                                height={32}
+                                className="object-cover w-full h-full"
                             />
                         </div>
 
@@ -253,12 +270,13 @@ const EmbedPage = () => {
                             >
 
                                 {msg.role !== "user" && (
-                                    <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg flex-shrink-0">
+                                    <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg shrink-0">
                                         <Image
-                                            src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                            src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                             alt="ConvoX"
-                                            width={40}
-                                            height={40}
+                                            width={32}
+                                            height={32}
+                                            className="object-cover w-full h-full"
                                         />
                                     </div>
                                 )}
@@ -293,12 +311,13 @@ const EmbedPage = () => {
 
                     {isTyping && (
                         <div className="flex gap-3 items-center">
-                            <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg flex-shrink-0">
+                            <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg shrink-0">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                    src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                     alt="ConvoX"
-                                    width={40}
-                                    height={40}
+                                    width={32}
+                                    height={32}
+                                    className="object-cover w-full h-full"
                                 />
                             </div>
 
@@ -316,7 +335,7 @@ const EmbedPage = () => {
 
 
             {/* Footer - Fixed */}
-            <div className="flex-shrink-0 p-4 bg-[#0a0a0e] border-t border-white/5">
+            <div className="shrink-0 p-4 bg-[#0a0a0e] border-t border-white/5">
 
                 <div className="relative">
                     <Textarea

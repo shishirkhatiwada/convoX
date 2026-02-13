@@ -58,11 +58,11 @@ const Hero = () => {
                <div className="flex max-w-[85%] gap-3 flex-row mt-5">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                       alt="ConvoX"
                       className="w-full h-full object-cover rounded-full"
-                      width={40}
-                      height={40}
+                      width={32}
+                      height={32}
                     />
                   </div>
 
@@ -103,11 +103,11 @@ const Hero = () => {
                 <div className="flex max-w-[85%] gap-3 flex-row mt-5">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                       alt="ConvoX"
                       className="w-full h-full object-cover rounded-full"
-                      width={40}
-                      height={40}
+                      width={32}
+                      height={32}
                     />
                   </div>
                   <div className="space-y-2">
