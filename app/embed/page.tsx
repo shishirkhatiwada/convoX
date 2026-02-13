@@ -224,11 +224,11 @@ const EmbedPage = () => {
                     <div className="relative">
                         <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg">
                             <Image
-                                src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                 alt="ConvoX"
-                                width={40}
-                                height={40}
-                                className="object-cover"
+                                width={32}
+                                height={32}
+                                className="object-cover w-full h-full"
                             />
                         </div>
 
@@ -272,10 +272,11 @@ const EmbedPage = () => {
                                 {msg.role !== "user" && (
                                     <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg shrink-0">
                                         <Image
-                                            src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                            src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                             alt="ConvoX"
-                                            width={40}
-                                            height={40}
+                                            width={32}
+                                            height={32}
+                                            className="object-cover w-full h-full"
                                         />
                                     </div>
                                 )}
@@ -312,10 +313,11 @@ const EmbedPage = () => {
                         <div className="flex gap-3 items-center">
                             <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white/10 shadow-lg shrink-0">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1638957319391-9b81b996afca?q=80&w=1074&auto=format&fit=crop"
+                                    src="https://images.unsplash.com/photo-1659018966820-de07c94e0d01?q=80&w=1198&auto=format&fit=crop"
                                     alt="ConvoX"
-                                    width={40}
-                                    height={40}
+                                    width={32}
+                                    height={32}
+                                    className="object-cover w-full h-full"
                                 />
                             </div>
 
