@@ -6,12 +6,13 @@ import {
   Bot,
   Layers,
   LayoutDashboard,
+  LogOut,
   MessageSquare,
   Settings,
   Slice,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const SIDEBAR_ITEMS = [
@@ -49,6 +50,7 @@ const SIDEBAR_ITEMS = [
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { email } = useUser();
   const [metadata, setMetadata] = useState<any>();
   const [isLoading, seIsLoading] = useState(true);
@@ -62,6 +64,22 @@ const Sidebar = () => {
     };
     fetchMetadata();
   }, [email]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", { method: "POST" });
+      const data = await response.json();
+      
+      if (data.success) {
+        // Force a full page reload to home
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Still redirect even if there's an error
+      window.location.href = "/";
+    }
+  };
 
   return (
     <aside className="w-64 border-r border-white/5 bg-[#050509] flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex">
@@ -95,7 +113,7 @@ const Sidebar = () => {
       </nav>
       {/* profile section */}
 
-      <div className="p-4 border-t border-white/5">
+      <div className="p-4 border-t border-white/5 space-y-2">
         <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 cursor-pointer transition-colors group">
           <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10">
             <span className="text-xs text-zinc-400 group-hover:text-white ">
@@ -109,6 +127,14 @@ const Sidebar = () => {
             <span className="text-xs text-zinc-500 truncate">{email}</span>
           </div>
         </div>
+        
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-zinc-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="text-sm font-light">Logout</span>
+        </button>
       </div>
     </aside>
   );
