@@ -1,4 +1,5 @@
 "use client";
+import DashboardOverView from "@/components/dashboard/DashboardOverView";
 import InitialForm from "@/components/dashboard/InitialForm";
 import React, { useEffect, useState } from "react";
 
@@ -30,7 +31,7 @@ const Page = () => {
           <InitialForm />
         </div>
       ):(
-        <></>
+       <DashboardOverView/>
       )}
     </div>
   );
