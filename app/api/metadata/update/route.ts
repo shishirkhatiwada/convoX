@@ -2,10 +2,10 @@ import { db } from "@/db/client";
 import { chatBotMetadata } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuth";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
-export async function PUT(res: Response) {
+export async function PUT(req: NextRequest) {
     try {
         const user = await isAuthorized()
 
@@ -13,7 +13,7 @@ export async function PUT(res: Response) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        const body = await res.json()
+        const body = await req.json()
 
         const { color, welcome_message } = body
 
@@ -28,7 +28,8 @@ export async function PUT(res: Response) {
 
         return NextResponse.json(updatedMetadata, { status: 200 });
         
-    } catch {
-
+    } catch (error) {
+        console.error("Error updating metadata:", error);
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
      }
 } 
