@@ -66,7 +66,7 @@ const Integration = () => {
                     <span className="text-indigo-400">src</span>
                     <span className="text-green-300">
 
-                   &quot;https://convox.ai/embed.js&quot;
+                   &quot;https://convo-x-blush.vercel.app/embed.js&quot;
                     </span>
                 
                 </div>

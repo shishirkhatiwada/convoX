@@ -10,7 +10,7 @@
             console.error('Widget ID not found')
         }
 
-        fetch("http://localhost:3000/api/widget/session" ,{
+        fetch("https://convo-x-blush.vercel.app/api/widget/session" ,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -30,7 +30,7 @@
             }
 
             var iframe = document.createElement('iframe')
-            iframe.src = 'http://localhost:3000/embed?token=' + encodeURIComponent(data.token)
+            iframe.src = 'https://convo-x-blush.vercel.app/embed?token=' + encodeURIComponent(data.token)
             iframe.setAttribute("title", "Support Chat")
             iframe.style.position = 'fixed'
             iframe.style.bottom = '20px'

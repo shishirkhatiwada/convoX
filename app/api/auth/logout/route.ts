@@ -30,5 +30,5 @@ export async function GET() {
     cookieStore.delete("metadata");
     cookieStore.delete("sk_state");
     
-    return NextResponse.redirect(new URL('/', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'));
+    return NextResponse.redirect(new URL('/', process.env.NEXT_PUBLIC_APP_URL || 'https://convo-x-blush.vercel.app'));
 }
